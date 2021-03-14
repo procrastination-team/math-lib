@@ -1,1 +1,2 @@
-math-lib
+# math-lib
+Computational Mathematics Algorithms
