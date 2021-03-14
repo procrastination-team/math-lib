@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.2)
 
-project(vichmat VERSION 0.0.1)
+project(math-lib VERSION 0.0.1)
 
 add_executable(horner horner_scheme/main.cpp)
 add_executable(gauss_det gauss_determinant/mainp.cpp)
