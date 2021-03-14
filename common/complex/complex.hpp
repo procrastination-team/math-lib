@@ -40,13 +40,19 @@ namespace common
   };
   
   /*
-   * Comparison operator
+   * Comparison operators
    */
   template< class T >
   constexpr bool operator==( const Complex<T>& lhs, const Complex<T>& rhs)
   {
     return (std::abs(lhs.real() - rhs.real()) < EPSILON)
     && (std::abs(lhs.imag() - rhs.imag()) < EPSILON);
+  }
+  
+  template< class T >
+  constexpr bool operator!=( const Complex<T>& lhs, const Complex<T>& rhs)
+  {
+    return !(lhs == rhs);
   }
   
   /*
