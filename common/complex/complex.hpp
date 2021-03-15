@@ -1,6 +1,8 @@
 #pragma once
 
 #include <cmath>
+#include <sstream>
+#include <string_view>
 
 #define EPSILON 1.5e-05
 
@@ -15,16 +17,7 @@ namespace common
       m_imag(imag)
     {}
     
-    constexpr Complex(const Complex& other)
-    : m_real(other.real()),
-      m_imag(other.imag())
-    {}
-    
-    template< class U >
-    constexpr Complex(const Complex<U>& other)
-    : m_real(reinterpret_cast<T>(other.real())),
-      m_imag(reinterpret_cast<T>(other.imag()))
-    {}
+    constexpr Complex(const Complex& other) = default;
     
     ~Complex() = default;
     
@@ -39,18 +32,96 @@ namespace common
     T m_imag;
   };
   
+  template< typename T>
+  std::ostream& operator<<(std::ostream& output, const Complex<T>& c)
+  {
+    if(c.real() != 0)
+    {
+      output << c.real();
+      if(c.imag() > 0) output << '+';
+      if(c.imag() == 0) return output;
+    }
+    if(c.imag() != 0)
+    {
+      if(c.imag() != 1)
+        output << c.imag();
+      output << 'i';
+    }
+    else output << 0;
+    return output;            
+  }
+  
+  template< typename T >
+  constexpr Complex<T> parse_complex (std::string_view in)
+  {
+    Complex<T> res{0, 0};
+    
+    using namespace std::literals;
+    if(in.data() == "i"s)
+    {
+      res.imag(1);
+      return res;
+    }
+    if(in.data() == "-i"s)
+    {
+      res.imag(-1);
+      return res;
+    }
+    
+    std::stringstream input(in.data());
+    std::string imag_part;
+    float num;
+
+    input >> num;
+    std::getline(input, imag_part);
+
+    int plus_pos = imag_part.find('+');
+    int minus_pos = imag_part.find('-');
+    int i_pos = imag_part.find('i');
+
+    if(i_pos < 0)
+    {
+      res.real(num);
+      return res;
+    }
+    
+    if(plus_pos < 0 && i_pos == 0)
+    {
+      res.imag(num);
+      return res;
+    }
+    
+    res.real(num);
+    imag_part.replace(i_pos, 1, "");
+    
+    if (plus_pos >= 0) 
+      imag_part.replace(plus_pos, 1, "");
+    if(minus_pos >= 0)
+      imag_part.replace(minus_pos, 1, "");
+
+    res.imag(atof(imag_part.c_str()));
+
+    if (res.imag() == 0)
+      res.imag(1);
+    
+    if(minus_pos >= 0)
+      res.imag(-res.imag());
+
+    return res;
+  }
+  
   /*
    * Comparison operators
    */
-  template< class T >
-  constexpr bool operator==( const Complex<T>& lhs, const Complex<T>& rhs)
+  template< typename T >
+  constexpr bool operator==(const Complex<T>& lhs, const Complex<T>& rhs)
   {
     return (std::abs(lhs.real() - rhs.real()) < EPSILON)
     && (std::abs(lhs.imag() - rhs.imag()) < EPSILON);
   }
   
-  template< class T >
-  constexpr bool operator!=( const Complex<T>& lhs, const Complex<T>& rhs)
+  template< typename T >
+  constexpr bool operator!=(const Complex<T>& lhs, const Complex<T>& rhs)
   {
     return !(lhs == rhs);
   }
@@ -58,7 +129,7 @@ namespace common
   /*
    * Addition operators
    */
-  template< class T >
+  template< typename T >
   constexpr Complex<T> operator+(const Complex<T>& lhs, const Complex<T>& rhs)
   {
     return Complex<T>{
@@ -67,7 +138,7 @@ namespace common
     };
   }
   
-  template< class T >
+  template< typename T >
   constexpr Complex<T> operator+(const Complex<T>& lhs, const T& rhs)
   {
     return Complex<T>{
@@ -76,7 +147,7 @@ namespace common
     };
   }
   
-  template< class T >
+  template< typename T >
   constexpr Complex<T> operator+(const T& lhs, const Complex<T>& rhs)
   {
     return Complex<T>{
@@ -88,7 +159,7 @@ namespace common
   /*
    * Subtraction operators
    */
-  template< class T >
+  template< typename T >
   constexpr Complex<T> operator-(const Complex<T>& lhs, const Complex<T>& rhs)
   {
     return Complex<T>{
@@ -97,7 +168,7 @@ namespace common
     };
   }
   
-  template< class T >
+  template< typename T >
   constexpr Complex<T> operator-(const Complex<T>& lhs, const T& rhs)
   {
     return Complex<T>{
@@ -106,7 +177,7 @@ namespace common
     };
   }
   
-  template< class T >
+  template< typename T >
   constexpr Complex<T> operator-(const T& lhs, const Complex<T>& rhs)
   {
     return Complex<T>{
@@ -118,16 +189,17 @@ namespace common
   /*
    * Multiplication operators
    */
-  template< class T >
+  template< typename T >
   constexpr Complex<T> operator*(const Complex<T>& lhs, const Complex<T>& rhs)
   {
-    return Complex<T>{
+    auto res = Complex<T>{
       lhs.real() * rhs.real() - lhs.imag() * rhs.imag(),
       lhs.imag() * rhs.real() + lhs.real() * rhs.imag()
     };
+    return res;
   }
   
-  template< class T >
+  template< typename T >
   constexpr Complex<T> operator*(const Complex<T>& lhs, const T& rhs)
   {
     return Complex<T>{
@@ -136,7 +208,7 @@ namespace common
     };
   }
   
-  template< class T >
+  template< typename T >
   constexpr Complex<T> operator*(const T& lhs, const Complex<T>& rhs)
   {
     return Complex<T>{
@@ -148,7 +220,7 @@ namespace common
   /*
    * Division operators
    */
-  template< class T >
+  template< typename T >
   constexpr Complex<T> operator/(const Complex<T>& lhs, const Complex<T>& rhs)
   {
     return Complex<T>{
@@ -157,7 +229,7 @@ namespace common
     };
   }
   
-  template< class T >
+  template< typename T >
   constexpr Complex<T> operator/(const Complex<T>& lhs, const T& rhs)
   {
     return Complex<T>{
@@ -165,8 +237,5 @@ namespace common
       lhs.imag() / rhs
     };
   }
-  
-  template< class T >
-  constexpr Complex<T> operator/(const T& lhs, const Complex<T>& rhs); // i'm sure no one'll ever need this useless thing
   
 } //namespace common
