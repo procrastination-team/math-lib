@@ -64,7 +64,7 @@ namespace common
       bool operator==(const iterator& other) const { return (m_row == other.m_row) && (m_col == other.m_col);  }
       bool operator!=(const iterator& other) const { return (m_row != other.m_row) || (m_col != other.m_col);  }
 
-      const T operator*() const { return m_pMatrix->m_data[m_row][m_col]; }
+      T& operator*() const { return m_pMatrix->m_data[m_row][m_col]; }
 
     private:
       Matrix<T>* m_pMatrix;
@@ -95,6 +95,19 @@ namespace common
     
     std::vector<std::vector<T>> m_data;
   };
+  
+  template< typename T>
+  std::ostream& operator<<(std::ostream& output, const Matrix<T>& m)
+  {
+    for(std::size_t i = 0; i < m.rows(); ++i)
+    {
+      for(std::size_t j = 0; j < m.colls(); ++j)
+        output << m.get(i, j) << ' ';
+      output << std::endl;
+    }
+    
+    return output;
+  }
   
   template< typename T >
   constexpr bool operator==(const Matrix<T>& lhs, const Matrix<T>& rhs)
@@ -155,7 +168,7 @@ namespace common
       {
         res[i][j] = 0;
         for (std::size_t k = 0; k < rhs.rows(); k++)
-          res[i][j] += lhs.get(i, k) * rhs.get(k, j);
+          res[i][j] = res[i][j] + (lhs.get(i, k) * rhs.get(k, j));
       }
     }
     return res;
