@@ -7,8 +7,6 @@
 
 namespace common
 {
-  constexpr double EPSILON = 1E-9;
-  
   template<typename T>
   class Matrix
   {
