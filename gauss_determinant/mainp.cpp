@@ -23,14 +23,14 @@ int main() {
         freopen("output.txt", "w", stdout);
         freopen("input.txt", "r", stdin);
     }
-    if (not isFileInp) {
+    if (!isFileInp) {
         cout << "Введите размер матрицы (N):\n";
     }
     cin >> N;
     double *S = new double[N * N];
     double det;
     for (int i = 0; i < N * N; i++) {
-        if (not isFileInp) {
+        if (!isFileInp) {
             cout << "Введите элемент матрицы (" << i % N << ", " << i / N << "):\n";
         }
         cin >> S[i];
