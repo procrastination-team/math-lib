@@ -18,7 +18,7 @@ target_compile_options(horner_scheme PRIVATE
   -Wall -Wextra -pedantic
 ) 
 
-set_target_properties(compl_matrix PROPERTIES
+set_target_properties(complex_matrices PROPERTIES
   CXX_STANDARD 17
   CXX_STANDARD_REQUIRED ON
 )
