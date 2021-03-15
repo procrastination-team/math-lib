@@ -1,10 +1,14 @@
 #pragma once
 
+#include <cmath>
 #include <cstddef>
+#include <ostream>
 #include <vector>
 
 namespace common
 {
+  constexpr double EPSILON = 1E-9;
+  
   template<typename T>
   class Matrix
   {
@@ -84,6 +88,51 @@ namespace common
           res[j][i] = m_data[i][j];
           
       return res;
+    }
+    
+    T det() const
+    {
+      if(m_rows != m_colls) return 0;
+      
+      std::vector<std::vector<T>> a = m_data;
+      std::size_t k, j;
+
+      T det = 1;
+      for(std::size_t i = 0; i < m_rows; ++i)
+      {
+        k = i;
+        for(j = i + 1; j < m_rows; ++j)
+        {
+          if(std::abs(a[j][i]) > std::abs(a[k][i]))
+            k = j;
+        }
+        
+        if(std::abs(a[k][i]) < EPSILON)
+        {
+          det = 0;
+          break;
+        }
+        
+        a[i].swap(a[k]);
+        if (i != k)
+          det = -det;
+        
+        det = det * a[i][i];
+        
+        for(j = i + 1; j < m_rows; ++j)
+          a[i][j] = a[i][j] / a[i][i];
+        
+        for(j = 0; j < m_rows; ++j)
+        {
+          if((j != i) && (std::abs(a[j][i]) > EPSILON))
+          {
+            for (k = i + 1; k < m_rows; ++k)
+              a[j][k] = a[j][k] - (a[i][k] * a[j][i]);
+          }
+        }
+      }
+
+      return det;
     }
 
   private:

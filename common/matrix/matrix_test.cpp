@@ -145,6 +145,25 @@ TEST(MatrixTest, MultiplyMatrices)
   ASSERT_EQ(res[2][3], 56);
 }
 
+TEST(MatrixTest, Determinant)
+{
+  common::Matrix<double> mx{3, 3};
+  mx[0][0] = 2;
+  mx[0][1] = 5;
+  mx[0][2] = 1;
+  
+  mx[1][0] = 1;
+  mx[1][1] = -7;
+  mx[1][2] = 1;
+  
+  mx[2][0] = 7;
+  mx[2][1] = 6;
+  mx[2][2] = 9;
+  
+  auto det = mx.det();
+  ASSERT_DOUBLE_EQ(-93, det);
+}
+
 int main(int argc, char** argv)
 {
   testing::InitGoogleTest(&argc, argv);
