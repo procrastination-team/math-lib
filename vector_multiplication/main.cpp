@@ -1,7 +1,7 @@
 #include <iostream>
 #include <string>
 #include <vector>
-
+#include<cmath>
 void showUseCases() {
 	std::cout << "1) to scalar multiply 2 vectors enter \"scalar row|column <number> row|column <number>\" like \"scalar row 3 row 4\".\n";
 	std::cout << "2) to vector multiply select the vector that won't be used like \"vector column 2\"\n";
