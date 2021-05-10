@@ -41,6 +41,9 @@ set_target_properties(interpolate PROPERTIES
   CXX_STANDARD 20
   CXX_STANDARD_REQUIRED ON
 )
+target_include_directories(interpolate
+  PRIVATE common
+)
 target_compile_options(interpolate PRIVATE
   -Wall -Wextra -pedantic
 )
