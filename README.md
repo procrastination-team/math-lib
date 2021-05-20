@@ -13,5 +13,6 @@ $ ./task_name
 ## Tasks
 * [2.1 Horner scheme](./horner_scheme)
 * [4.1 Operations with complex matrices](./complex_matrices)
-* [4.2.3 Gauss determinant](./gauss_determinant)
+* [4.2.3 Gauß determinant](./gauss_determinant)
 * [6.1 Scalar and vector multiplication of vectors](./vector_multiplication) 
+* [7.2 Gauß interpolation](./Gauß-interpolation)
