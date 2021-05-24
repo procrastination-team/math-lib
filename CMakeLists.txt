@@ -6,7 +6,7 @@ add_executable(horner_scheme horner_scheme/main.cpp)
 add_executable(gauss_determinant gauss_determinant/main.cpp)
 add_executable(complex_matrices complex_matrices/main.cpp)
 add_executable(vector_multiplication vector_multiplication/main.cpp)
-add_executable(fourier_transform fourier_transform/main.cpp);
+add_executable(fourier_transform fourier_transform/main.cpp)
 add_executable(interpolate Gauß-interpolation/main.cpp)
 
 set_target_properties(horner_scheme PROPERTIES
