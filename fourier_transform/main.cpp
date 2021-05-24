@@ -1,7 +1,7 @@
 #include <iostream>
 #include <cmath>
 #include <vector>
-#include "../common/complex/complex.hpp"
+#include "complex/complex.hpp"
 
 using namespace std;
 
