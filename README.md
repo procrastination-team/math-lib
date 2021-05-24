@@ -15,4 +15,5 @@ $ ./task_name
 * [4.1 Operations with complex matrices](./complex_matrices)
 * [4.2.3 Gauß determinant](./gauss_determinant)
 * [6.1 Scalar and vector multiplication of vectors](./vector_multiplication) 
+* [6.3 Fast Fourier transform](./fourier_transform) 
 * [7.2 Gauß interpolation](./Gauß-interpolation)
